@@ -33,7 +33,12 @@ public class Parqueadero {
      * @param cedula Cédula del propietario a buscar
      * @return El propietario encontrado, o null si no existe
      */
-    public Propietario buscarPropietario(String cedula) {
+   public Propietario buscarPropietario(String cedula) {
+        for (Propietario p : propietarios) {
+            if (p.getCedula().equals(cedula)) {
+                return p;
+            }
+        }
         // TODO: Implementar método usando foreach
         return null;
     }
@@ -44,7 +49,12 @@ public class Parqueadero {
      * @param placa Placa del vehículo a buscar
      * @return El vehículo encontrado, o null si no existe
      */
-    public Vehiculo buscarVehiculo(String placa) {
+   public Vehiculo buscarVehiculo(String placa) {
+        for (Vehiculo v : vehiculos) {
+            if (v.getPlaca().equals(placa)) {
+                return v;
+            }
+        }
         // TODO: Implementar método usando foreach
         return null;
     }
@@ -59,6 +69,11 @@ public class Parqueadero {
      * @return true si se registró exitosamente, false si la cédula ya existe
      */
     public boolean registrarPropietario(String cedula, String nombre) {
+        if (buscarPropietario(cedula) != null) {
+            return false; // ya existe
+        }
+        Propietario nuevo = new Propietario(cedula, nombre);
+        propietarios.add(nuevo);
         // TODO: Implementar método con validación usando if
         return false;
     }
@@ -75,7 +90,19 @@ public class Parqueadero {
      * @param tipo Tipo de vehículo ("SEDAN", "SUV" o "CAMION")
      * @return true si se registró exitosamente, false si la placa ya existe o el propietario no existe
      */
-    public boolean registrarVehiculo(String placa, int modelo, String color, String cedula, String tipo) {
+      public boolean registrarVehiculo(String placa, int modelo, String color,
+                                     String cedula, String tipo) {
+
+        if (buscarVehiculo(placa) != null) {
+            return false;
+        }
+        Propietario propietario = buscarPropietario(cedula);
+        if (propietario == null) {
+            return false;
+        }
+        Vehiculo veh = new Vehiculo(placa, modelo, color, propietario, tipo);
+        vehiculos.add(veh);
+
         // TODO: Implementar método con validaciones usando if
         return false;
     }
@@ -90,8 +117,12 @@ public class Parqueadero {
      * @return true si se acumularon las horas, false si el propietario no existe
      */
     public boolean acumularHorasCliente(String cedula, int horas) {
-        // TODO: Implementar método con delegación
-        return false;
+        Propietario p = buscarPropietario(cedula);
+        if (p == null) {
+            return false;
+        }
+        p.acumularHoras(horas);
+        return true;
     }
 
     // ==================== MÉTODO DE REGISTRO DE SERVICIO ====================
@@ -126,7 +157,12 @@ public class Parqueadero {
      * Debe recorrer la lista de servicios y sumar los costos.
      * @return La suma total de todos los costos de servicios
      */
-    public double calcularTotalRecaudado() {
+   public double calcularTotalRecaudado() {
+        double total = 0;
+        for (Servicio s : servicios) {
+            total += s.calcularCosto();
+        }
+
         // TODO: Implementar método usando foreach con acumulador
         return 0;
     }

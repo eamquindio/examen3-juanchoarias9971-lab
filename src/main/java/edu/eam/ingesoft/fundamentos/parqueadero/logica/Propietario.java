@@ -21,9 +21,12 @@ public class Propietario {
      * @param cedula Número de identificación único del propietario
      * @param nombre Nombre completo del propietario
      */
-    public Propietario(String cedula, String nombre) {
+    public Propietario(String cedula, String nombre) { 
+     this.cedula = cedula;
+     this.nombre = nombre;
+     this.horasAcumuladas = 0;
+}
         // TODO: Implementar constructor
-    }
 
     // ==================== GETTERS ====================
 
@@ -55,8 +58,12 @@ public class Propietario {
      * @param horas Cantidad de horas a sumar
      */
     public void acumularHoras(int horas) {
-        // TODO: Implementar método
+    if (horas > 0) {
+        this.horasAcumuladas += horas;
     }
+}
+        // TODO: Implementar método
+    
 
     /**
      * Determina la categoría del cliente según sus horas acumuladas.
@@ -65,10 +72,16 @@ public class Propietario {
      * - VIP: más de 500 horas
      * @return La categoría del cliente ("ESTANDAR", "ESPECIAL" o "VIP")
      */
-    public String obtenerCategoria() {
-        // TODO: Implementar método usando if-else múltiple
-        return null;
+  public String obtenerCategoria() {
+    if (horasAcumuladas <= 100) {
+        return "ESTANDAR";
+    } else if (horasAcumuladas <= 500) {
+        return "ESPECIAL";
+    } else {
+        return "VIP";
     }
+}
+
 
     /**
      * Calcula el porcentaje de descuento según la categoría del cliente.
@@ -78,17 +91,28 @@ public class Propietario {
      * Pista: Usar el método obtenerCategoria() para saber la categoría
      * @return El porcentaje de descuento como valor decimal
      */
-    public double obtenerDescuento() {
-        // TODO: Implementar método usando switch
-        return 0;
+   public double obtenerDescuento() { 
+    String categoria = obtenerCategoria();
+
+    switch (categoria) {
+        case "ESPECIAL":
+            return 0.10; 
+        case "VIP":
+            return 0.15; 
+        case "ESTANDAR":
+        default:
+            return 0.0; 
     }
+}
 
     /**
      * Indica si el propietario tiene categoría VIP.
      * @return true si tiene más de 500 horas acumuladas, false en caso contrario
      */
-    public boolean esVIP() {
+    
+    public boolean esVIP() { 
+        return horasAcumuladas >= 500;
+        
         // TODO: Implementar método usando if simple
-        return false;
     }
 }
